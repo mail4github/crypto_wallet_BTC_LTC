@@ -211,11 +211,13 @@ function change_language(language)
     document.cookie = `language=${language}; expires=${date.toUTCString()}; path=/`;
     global_language = language;
     
+	$("body").css("filter", "blur(10px)");
+
     init_google_translate();
     change_language_automatically();
     setTimeout(() => {
         window.location.reload();
-    }, 1000);
+    }, 500);
 }
 
 $( document ).ready(function() {
