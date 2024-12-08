@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+	<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<title>Transaction Paused</title>
+	<style type="text/css" media="all">
+	 @import "/css/site_design.css";
+	</style>
+	
+</head>
+<body bottommargin="0" topmargin="0" leftmargin="0" rightmargin="0"  >
+
+<h1>Transaction postponed</h1>
+<p>Unfortunately it takes more time than we expected.</p>
+<p>This web page will be refreshed in <span id="time_left" style="font-weight:bold;">30</span> seconds.</p>
+<p>We appreciate your patience.</p>
+<p><a href="/acc_main.php">Back to home page.</a></p>
+
+<script type="text/javascript">
+function countdown_timer() {
+	if(	countdown_timer_id != null ){
+		clearInterval(countdown_timer_id);
+		countdown_timer_id = null;
+	}
+	if	( countdown_value <= 0) {
+		var s = window.location.href;
+		if ( s.indexOf("?") >= 0 )
+			s = s + "&" + Math.floor((Math.random()*10000)+1);
+		else
+			s = s + "?" + Math.floor((Math.random()*10000)+1);
+		//alert(s);
+		window.location.href = s;//"/acc_main.php";
+		return;
+	}
+	countdown_value = countdown_value - countdown_step_milisecs / 1000;
+	if ( countdown_value < 0 ) 
+		countdown_value = 0;
+	document.getElementById('time_left').innerHTML = countdown_value.toFixed(0);
+	countdown_timer_id = window.setTimeout("countdown_timer();", countdown_step_milisecs);
+}
+var countdown_value = 30;
+var countdown_step_milisecs = 1000;
+var countdown_timer_id = null;
+countdown_timer();
+</script>
+
+</body>
+</html>
+
+

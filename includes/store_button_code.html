@@ -1,0 +1,178 @@
+<style>
+.modal-screen__WEBSITE_NUMBER__{display:none;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.4);}
+.modal-content__WEBSITE_NUMBER__{font-family:Arial, Helvetica, sans-serif;background-color:#fefefe;margin:auto;padding:6px 6px 0 6px;border:1px solid #888;border-radius:8px;width:80%;max-width:600px;box-shadow:10px 10px 15px 0px rgba(0,0,0,0.4);}
+@media (max-width:767px) {.modal-content__WEBSITE_NUMBER__{width:95%;}.modal-screen__WEBSITE_NUMBER__{padding-top:2px;}#address__WEBSITE_NUMBER__{font-size:80%;}}
+.close_btn__WEBSITE_NUMBER__{font-family:Arial, Helvetica, sans-serif;color:#400000;float:right;font-size:130%;font-weight:bold;margin-top:-4px;}
+.close_btn__WEBSITE_NUMBER__:hover,.close_btn__WEBSITE_NUMBER__:focus{color:#aa0000;cursor:pointer;}
+.pay_button__WEBSITE_NUMBER__{box-shadow:0px 0px 0px 2px #9fb4f2;background:linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);background-color:#7892c2;border-radius:10px;border:1px solid #4e6096;color:#ffffff;font-family: Arial, Helvetica, sans-serif;font-size:100%;padding:12px 37px;text-decoration:none;text-shadow:0px 1px 0px #283966;}
+.pay_button__WEBSITE_NUMBER__:hover{background:linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);background-color:#476e9e;}
+.footer__WEBSITE_NUMBER__{padding:0 10px 8px 10px; width:100%;text-align:center;}
+.body__WEBSITE_NUMBER__{width:100%; min-height:100px;}
+</style>
+<button id="purchase_button" class="pay_button__WEBSITE_NUMBER__" onclick="purchase_button_click__WEBSITE_NUMBER__();">purchase_button_caption</button>
+<div id="modal-screen__WEBSITE_NUMBER__" class="modal-screen__WEBSITE_NUMBER__" style="z-index:1000000;">
+	<form class="modal-content__WEBSITE_NUMBER__" name="frm_select_currency__WEBSITE_NUMBER__">
+		<span class="close_btn__WEBSITE_NUMBER__" onclick="document.getElementById('modal-screen__WEBSITE_NUMBER__').style.display='none';">&times;</span>
+		<span></span>
+		<div style="padding:0; width:100%;">
+			<div id="select_currency_div__WEBSITE_NUMBER__">
+				<div class="body__WEBSITE_NUMBER__" style="padding:10px 0px 0px 10px; text-align: center;">
+					<h2>Select Currency:</h2>
+					<table style="margin:20px 0 30px 30px">
+					<tr><td><h2><input type="radio" name="currency__WEBSITE_NUMBER__" value="BTC" checked></h2></td><td><h2>Bitcoin</h2></td></tr>
+					<tr><td><h2><input type="radio" name="currency__WEBSITE_NUMBER__" value="LTC"></h2></td><td><h2>Litecoin</h2></td></tr>
+					</table>
+				</div>
+				<div class="footer__WEBSITE_NUMBER__">
+					<button class="pay_button__WEBSITE_NUMBER__" onclick="return cr_selcted__WEBSITE_NUMBER__();">Select...</button>
+				</div>
+			</div>
+			<div style="text-align:center;display:none;" id="pay_currency_div__WEBSITE_NUMBER__">
+				<div class="body__WEBSITE_NUMBER__">
+					<h2>Please pay:</h2>
+					<p><b id="amount__WEBSITE_NUMBER__"></b> <span id="currency__WEBSITE_NUMBER__"></span></p>
+					<p>to the <span id="currency_name__WEBSITE_NUMBER__" style="text-transform:capitalize;"></span> address:</p>
+					<p><b id="address__WEBSITE_NUMBER__"></b></p>
+					<p><button class="pay_button__WEBSITE_NUMBER__" onclick="return mony_sent__WEBSITE_NUMBER__();">I paid</button></p>
+					<img src="" id="qrcode__WEBSITE_NUMBER__" style="display:none; width:120px; height:120px;">
+					<p><a href="" id="gotowallet__WEBSITE_NUMBER__">Go to the <span id="currency_name2__WEBSITE_NUMBER__" style="text-transform:capitalize;"></span> Wallet</a></p>
+				</div>
+				<div class="footer__WEBSITE_NUMBER__">
+					
+				</div>
+			</div>
+			<div style="text-align:center;display:none;padding:50px 0px 70px;" id="payment_sent_div__WEBSITE_NUMBER__">
+				<p>We are waiting for receiving:</p>
+				<p><b id="amount3__WEBSITE_NUMBER__"></b> <span id="currency3__WEBSITE_NUMBER__"></span></p>
+				<p>to the <span id="currency_name3__WEBSITE_NUMBER__" style="text-transform:capitalize;"></span> address:</p>
+				<p><b id="address3__WEBSITE_NUMBER__"></b></p>
+				<img src="https://fast2earn.com/images/wait_big3.gif" style="border:none;width:30px;height:30px;">
+			</div>
+			<div style="text-align:center;display:none;padding:40px 0 40px 0;" id="done_div__WEBSITE_NUMBER__">
+				<h2>Congratulations!!!</h2> 
+				<p>Your payment has been received.</p>
+				<img src="https://fast2earn.com/images/icon_good2.png" style="border:none;width:60px;height:60px;"><br>
+			</div>
+		</div>	
+	</form>
+</div>
+<script>
+var currency__WEBSITE_NUMBER__ = "BTC";
+var currency_name__WEBSITE_NUMBER__ = "bitcoin";
+var isIE8 = window.XDomainRequest ? true : false;
+var invocation = reqst__WEBSITE_NUMBER__();
+var one_currency = "";
+var crypto_address__WEBSITE_NUMBER__ = "";
+var amount_in_USD = 1.99;
+var storeid = "storeid";
+var step__WEBSITE_NUMBER__ = 1;
+var tm__WEBSITE_NUMBER__ = 0;
+var success_url="";
+function purchase_button_click__WEBSITE_NUMBER__()
+{
+	document.getElementById("modal-screen__WEBSITE_NUMBER__").style.display="block"; 
+	document.getElementById("select_currency_div__WEBSITE_NUMBER__").style.display="block"; 
+	document.getElementById("pay_currency_div__WEBSITE_NUMBER__").style.display="none";
+	document.getElementById("payment_sent_div__WEBSITE_NUMBER__").style.display="none";
+	if (one_currency.length > 0)
+		cr_selcted__WEBSITE_NUMBER__(one_currency);
+}
+function reqst__WEBSITE_NUMBER__() 
+{
+	if (isIE8)
+		return new window.XDomainRequest();
+	else
+		return new XMLHttpRequest();
+	return false;
+}
+function get__WEBSITE_NUMBER__(url, cstep) 
+{
+	step__WEBSITE_NUMBER__ = cstep;
+	if (invocation) {
+		if(isIE8) {
+			invocation.onload = rcv__WEBSITE_NUMBER__;
+			invocation.open("GET", url, true);
+			invocation.send();
+		}
+		else {
+			invocation.open("GET", url, true);
+			invocation.onreadystatechange = function () {
+				if (invocation.readyState == 4) {
+					if (invocation.status == 200) 
+						rcv__WEBSITE_NUMBER__(); 
+					else
+					if (step__WEBSITE_NUMBER__ == 1)
+						alert("Invocation Errors Occured");
+				}
+			}
+			invocation.send();
+		}
+	}
+}
+function rcv__WEBSITE_NUMBER__() 
+{
+	var res = JSON.parse(invocation.responseText);
+	if ( res["success"] ) {
+		if (step__WEBSITE_NUMBER__ == 1){
+			crypto_address__WEBSITE_NUMBER__ = res["values"]["crypto_address"];
+			var total = res["values"]["total_in_crypto"];
+			document.getElementById("address__WEBSITE_NUMBER__").innerHTML = crypto_address__WEBSITE_NUMBER__;
+			document.getElementById("address3__WEBSITE_NUMBER__").innerHTML = crypto_address__WEBSITE_NUMBER__;
+			document.getElementById("amount__WEBSITE_NUMBER__").innerHTML = total;
+			document.getElementById("amount3__WEBSITE_NUMBER__").innerHTML = total;
+			document.getElementById("currency__WEBSITE_NUMBER__").innerHTML = currency__WEBSITE_NUMBER__;
+			document.getElementById("currency3__WEBSITE_NUMBER__").innerHTML = currency__WEBSITE_NUMBER__;
+			document.getElementById("currency_name__WEBSITE_NUMBER__").innerHTML = currency_name__WEBSITE_NUMBER__;
+			document.getElementById("currency_name2__WEBSITE_NUMBER__").innerHTML = currency_name__WEBSITE_NUMBER__;
+			document.getElementById("currency_name3__WEBSITE_NUMBER__").innerHTML = currency_name__WEBSITE_NUMBER__;
+
+			var cripto_ref = currency_name__WEBSITE_NUMBER__+":"+crypto_address__WEBSITE_NUMBER__+"?amount="+total;
+			document.getElementById("qrcode__WEBSITE_NUMBER__").setAttribute("src", "https://fast2earn.com/services/qrcode.php?data="+cripto_ref+"&size=10");
+			document.getElementById("qrcode__WEBSITE_NUMBER__").addEventListener("load", function(){ document.getElementById("qrcode__WEBSITE_NUMBER__").style.display="inline"; });
+			document.getElementById("gotowallet__WEBSITE_NUMBER__").setAttribute("href", cripto_ref);
+		}
+		else if (step__WEBSITE_NUMBER__ == 2){
+			if (res["values"]["paid_in_full"]) {
+				document.getElementById("select_currency_div__WEBSITE_NUMBER__").style.display="none";
+				document.getElementById("payment_sent_div__WEBSITE_NUMBER__").style.display="none";
+				document.getElementById("pay_currency_div__WEBSITE_NUMBER__").style.display="none";
+				document.getElementById("done_div__WEBSITE_NUMBER__").style.display="block";
+				clearInterval(tm__WEBSITE_NUMBER__);
+				if (success_url.length > 0)
+					setTimeout(function(){ window.location.href=success_url; }, 3000);
+			}
+			else
+			if (res["values"]["remains"])
+				document.getElementById("amount3__WEBSITE_NUMBER__").innerHTML = res["values"]["remains"];
+		}
+	}
+	else
+		alert(res["message"]);
+}
+function cr_selcted__WEBSITE_NUMBER__(selected_currency)
+{
+	document.getElementById("select_currency_div__WEBSITE_NUMBER__").style.display="none";
+	document.getElementById("payment_sent_div__WEBSITE_NUMBER__").style.display="none";
+	document.getElementById("pay_currency_div__WEBSITE_NUMBER__").style.display="block";
+	document.getElementById("done_div__WEBSITE_NUMBER__").style.display="none";
+	if ( typeof selected_currency == "undefined" )
+		currency__WEBSITE_NUMBER__ = window.frm_select_currency__WEBSITE_NUMBER__.currency__WEBSITE_NUMBER__.value;
+	else
+		currency__WEBSITE_NUMBER__ = selected_currency;
+	switch(currency__WEBSITE_NUMBER__) {
+		case "LTC":currency_name__WEBSITE_NUMBER__="litecoin";break;
+		default:currency_name__WEBSITE_NUMBER__="bitcoin";
+	}
+	get__WEBSITE_NUMBER__("https://fast2earn.com/store/get_addr_to_pay/"+currency__WEBSITE_NUMBER__+"/"+amount_in_USD+"/"+storeid+"/invoice/",1);
+	return false;
+}
+function mony_sent__WEBSITE_NUMBER__()
+{
+	document.getElementById("select_currency_div__WEBSITE_NUMBER__").style.display="none";
+	document.getElementById("pay_currency_div__WEBSITE_NUMBER__").style.display="none";
+	document.getElementById("payment_sent_div__WEBSITE_NUMBER__").style.display="block";
+	document.getElementById("done_div__WEBSITE_NUMBER__").style.display="none";
+	tm__WEBSITE_NUMBER__=setInterval(function(){get__WEBSITE_NUMBER__("https://fast2earn.com/store/check_order/"+crypto_address__WEBSITE_NUMBER__,2);},10000);
+	return false;
+}
+</script>
