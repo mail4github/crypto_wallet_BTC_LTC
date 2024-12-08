@@ -92,8 +92,9 @@ function collect_translated_strings()
 					if (typeof str_val != "undefiend" && str_val != null && str_val.length > 0) {
 						var en_hash = $(this).attr("_en_hash");
 						if (typeof en_hash == "string" && en_hash.length > 0) {
-							if ($(this).attr("_en_hash") != md5(str_val) && strings_arr.length < 100)
+							if ( /*$(this).attr("_en_hash") != md5(str_val) &&*/ strings_arr.length < 100) {
 								strings_arr.push([$(this).attr("_en_hash"), md5(str_val), Base64.encode(str_val), str_val]);
+							}
 						}
 					}
 				}

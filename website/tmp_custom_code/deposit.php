@@ -22,7 +22,7 @@ require(DIR_WS_INCLUDES.'header.php');
                             <option value="ltc" class="notranslate">LTC</option>
                             </select>
                         </div>
-                        <button class="submit-btn mx-1" onclick="show_qrCode();"><?php echo make_str_translateable('Show out'); ?></button>
+                        <button class="submit-btn mx-1" onclick="show_qrCode();"><?php echo make_str_translateable('Save'); ?></button>
                     </div>
                 </div>
             </div>

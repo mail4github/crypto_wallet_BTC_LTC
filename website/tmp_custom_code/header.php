@@ -4,7 +4,7 @@ if ( ! $user_account->is_loggedin() && ! is_integer(strpos($_SERVER['REQUEST_URI
 	exit;
 }
 
-if ( is_integer(strpos($_SERVER['REQUEST_URI'], 'acc_main')) ) {
+if ( ! is_integer(strpos($_SERVER['REQUEST_URI'], '_cp_')) ) {
     header('Location: /_cp_index');
 	exit;
 }
