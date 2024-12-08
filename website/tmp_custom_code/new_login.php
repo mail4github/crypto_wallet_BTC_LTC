@@ -68,20 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
           eyeIcon.src = '/tmp_custom_code/images/authorization/eye-close.png';
       }
   });
-  /*
-  document.getElementById('togglePassword2').addEventListener('click', function () {
-      var passwordField = document.getElementById('password2');
-      var eyeIcon = document.getElementById('eyeIcon2');
-
-      if (passwordField.type === 'text') {
-          passwordField.type = 'password'; 
-          eyeIcon.src = 'images/authorization/eye-close.png';
-      } else {
-          passwordField.type = 'text'; 
-          eyeIcon.src = 'images/authorization/eye-open.png'; 
-      }
-  });
-  */
+  
 });
 
 

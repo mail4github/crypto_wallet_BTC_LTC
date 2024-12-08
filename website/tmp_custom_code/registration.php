@@ -58,7 +58,7 @@ if ( !empty($_POST['form_submitted']) ) {
 <div class="form-group d-flex flex-column align-items-center">
     <div class="d-flex align-items-center">
         <img src="/sr_/captcha.php?width=650&height=240&char_min_size=100&char_max_size=110" alt="Captcha" class="mr-2" name="captcha_image" id="captcha_image" style="width:auto; height:47px;">
-        <img src="/tmp_custom_code/images/arrows.png" class="mr-2"></img>
+        <img src="/tmp_custom_code/images/arrows.png" class="mr-2" onclick="reloadImg(`captcha_image`); return false;" style="cursor:pointer;"></img>
         <input type="text" class="form-control captcha" placeholder="" name="captcha" id="captcha">
     </div>
     <button type="submit" class="btn btn-success btn-block d-flex justify-content-center align-items-center mt-3" name="submit_btn" id="submit_btn"><?php echo make_str_translateable('Register'); ?></button>
@@ -88,8 +88,6 @@ function validate_login_name()
 					$("#email").attr("not_valid", "1");
 					id_to_pulsate = "email";
 					show_message_box_box("<?php echo make_str_translateable('Error'); ?>", "", 2, string_to_hex("<p>An account <b>" + $("#email").val() + "</b> has already been assigned.</p>"), "pulsate_item");
-					//formGroup.addClass("has-error").removeClass("has-success");
-					//glyphicon.addClass("glyphicon-remove").removeClass("glyphicon-ok");
 				}
 				else {
 					$("#email").attr("not_valid", "0");
